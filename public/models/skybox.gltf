@@ -1,0 +1,221 @@
+{
+  "asset": {
+    "generator": "Khronos glTF Blender I/O v3.6.27",
+    "version": "2.0"
+  },
+  "extensionsUsed": ["KHR_materials_specular", "KHR_materials_ior"],
+  "scene": 1,
+  "scenes": [
+    {
+      "name": "Scene",
+      "nodes": [0]
+    },
+    {
+      "name": "Scene.001",
+      "nodes": [1]
+    }
+  ],
+  "nodes": [
+    {
+      "mesh": 0,
+      "name": "Sphere.003",
+      "translation": [
+        4.368978023529053, -11.179348945617676, 14.237056732177734
+      ]
+    },
+    {
+      "mesh": 1,
+      "name": "Sphere.004",
+      "scale": [20, 20, 20],
+      "translation": [
+        0.16722393035888672, 18.728965759277344, -0.46908071637153625
+      ]
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            0.048000001907348634, 0.048000001907348634, 0.048000001907348634
+          ]
+        },
+        "KHR_materials_ior": {
+          "ior": 0
+        }
+      },
+      "name": "final",
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0
+      }
+    },
+    {
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            0.07193700790405273, 0.07193700790405273, 0.07193700790405273
+          ]
+        },
+        "KHR_materials_ior": {
+          "ior": 0
+        }
+      },
+      "name": "final.001",
+      "pbrMetallicRoughness": {
+        "metallicFactor": 0
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Sphere.003",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "NORMAL": 1,
+            "TEXCOORD_0": 2
+          },
+          "indices": 3,
+          "material": 0
+        }
+      ]
+    },
+    {
+      "name": "Sphere.004",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 4,
+            "NORMAL": 5,
+            "TEXCOORD_0": 6
+          },
+          "indices": 3,
+          "material": 1
+        }
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    }
+  ],
+  "images": [
+    {
+      "mimeType": "image/jpeg",
+      "name": "vr360-intricate-fantasy-art-beautiful-sunset-ocean-warm-colo_82",
+      "uri": "../vr360-intricate-fantasy-art-beautiful-sunset-ocean-warm-colo_8239157.jpg"
+    }
+  ],
+  "accessors": [
+    {
+      "bufferView": 0,
+      "componentType": 5126,
+      "count": 2143,
+      "max": [42.93999481201172, 42.939998626708984, 42.93998718261719],
+      "min": [-42.939979553222656, -42.939998626708984, -42.939998626708984],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 2143,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 2143,
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5123,
+      "count": 11904,
+      "type": "SCALAR"
+    },
+    {
+      "bufferView": 4,
+      "componentType": 5126,
+      "count": 2143,
+      "max": [42.93999481201172, 42.939998626708984, 42.93998718261719],
+      "min": [-42.939979553222656, -42.939998626708984, -42.939998626708984],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 5,
+      "componentType": 5126,
+      "count": 2143,
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 6,
+      "componentType": 5126,
+      "count": 2143,
+      "type": "VEC2"
+    }
+  ],
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 25716,
+      "byteOffset": 0,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 25716,
+      "byteOffset": 25716,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 17144,
+      "byteOffset": 51432,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 23808,
+      "byteOffset": 68576,
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 25716,
+      "byteOffset": 92384,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 25716,
+      "byteOffset": 118100,
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 17144,
+      "byteOffset": 143816,
+      "target": 34962
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 160960,
+      "uri": "skybox.bin"
+    }
+  ]
+}
