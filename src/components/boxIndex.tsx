@@ -1,24 +1,26 @@
-"use client";
+'use client';
 
-import * as THREE from "three";
-import React, { useRef, useState } from "react";
+import * as THREE from 'three';
+import React, { useRef, useState } from 'react';
 import {
   Canvas,
   useFrame,
   ThreeElements,
   createRoot,
-} from "@react-three/fiber";
-import { SkyGeometry } from "three/examples/jsm/Addons.js";
+} from '@react-three/fiber';
+import { SkyGeometry } from 'three/examples/jsm/Addons.js';
 
-function Box(props: ThreeElements["mesh"]) {
+function Box(props: ThreeElements['mesh']) {
   const meshRef = useRef<THREE.Mesh>(null!);
   const [hovered, setHover] = useState(false);
   const [active, setActive] = useState(false);
+
   useFrame(
     (state, delta) =>
       (meshRef.current.rotation.x += delta) &&
       (meshRef.current.rotation.y += delta)
   );
+
   return (
     <mesh
       {...props}
@@ -29,7 +31,7 @@ function Box(props: ThreeElements["mesh"]) {
       onPointerOut={(event) => setHover(false)}
     >
       <boxGeometry args={[1, 2, 1]} />
-      <meshStandardMaterial color={hovered ? "hotpink" : "skyblue"} />
+      <meshStandardMaterial color={hovered ? 'hotpink' : 'skyblue'} />
     </mesh>
   );
 }
