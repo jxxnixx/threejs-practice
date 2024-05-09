@@ -1,9 +1,10 @@
-import Image from 'next/image';
-import BoxIndex from '../components/boxIndex';
-import Icon from '../components/icon';
-import View from '../components/view';
-import SphereIndex from '@/components/sphereIndex';
-import TableIndex from '@/components/tableIndex';
+import Image from "next/image";
+import BoxIndex from "../components/boxIndex";
+import Icon from "../components/icon";
+import View from "../components/view";
+import SphereIndex from "@/components/sphereIndex";
+import TableIndex from "@/components/tableIndex";
+import PeriodicTable from "@/components/periodicTable";
 
 export default function Home() {
   return (
@@ -11,8 +12,9 @@ export default function Home() {
       {/* <View /> */}
       {/* <BoxIndex /> */}
       {/* <Icon /> */}
-      <SphereIndex />
+      {/* <SphereIndex /> */}
       {/* <TableIndex /> */}
+      <PeriodicTable />
     </main>
   );
 }
