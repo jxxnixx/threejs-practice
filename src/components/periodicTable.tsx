@@ -43,6 +43,34 @@ function SmallSphere({ position, element, sphere, color }: any) {
   );
 }
 
+function SmallBox({ position, element, box, color }: any) {
+  return (
+    <mesh position={position}>
+      <boxGeometry args={box} />
+      <meshPhysicalMaterial
+        clearcoat={1}
+        clearcoatRoughness={0}
+        roughness={0}
+        metalness={0.4}
+        iridescence={1}
+        color={color}
+        transparent
+      />
+      <Html position={[0, 0, 0]} center>
+        <div className='element' style={{ color: color }}>
+          <div className='number'>{element.number}</div>
+          <div className='symbol'>{element.symbol}</div>
+          <div className='details'>
+            {element.name}
+            <br />
+            {element.weight}
+          </div>
+        </div>
+      </Html>
+    </mesh>
+  );
+}
+
 function createSpheresFromData({ data, bigRadius }: any) {
   const targets: any = {
     sphere: [],
@@ -68,11 +96,18 @@ function BigSphere({ period, smaillRadius, bigRadius, color }: any) {
   return (
     <>
       {period.map((element: any, index: any) => (
-        <SmallSphere
+        //   <SmallSphere
+        //     key={index}
+        //     element={element}
+        //     position={sphere[index]}
+        //     sphere={[smaillRadius, 64, 64]}
+        //     color={color}
+        //   />
+        <SmallBox
           key={index}
           element={element}
           position={sphere[index]}
-          sphere={[smaillRadius, 64, 64]}
+          box={[smaillRadius * 2, smaillRadius * 4, 1]}
           color={color}
         />
       ))}
@@ -84,7 +119,7 @@ function PeriodicTable() {
   return (
     <Canvas
       frameloop='demand'
-      camera={{ fov: 30, near: 0.1, far: 50, position: [0, 0, 40] }}
+      camera={{ fov: 300, near: 0.1, far: 5000, position: [0, 0, 2000] }}
       style={{ height: "100vh" }}>
       <ambientLight />
       <OrbitControls />
