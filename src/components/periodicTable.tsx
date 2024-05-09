@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -29,7 +29,7 @@ function SmallSphere({ position, element, sphere, color }: any) {
         transparent
       />
       <Html position={[0, 0, 0]} center>
-        <div className='element' style={{ color: color }}>
+        <div className='element' style={{ color: color, fontSize: "x-small" }}>
           <div className='number'>{element.number}</div>
           <div className='symbol'>{element.symbol}</div>
           <div className='details'>
@@ -43,10 +43,16 @@ function SmallSphere({ position, element, sphere, color }: any) {
   );
 }
 
-function SmallBox({ position, element, box, color }: any) {
+function SmallPlane({ position, element, plane, color, onClick }: any) {
   return (
-    <mesh position={position}>
-      <boxGeometry args={box} />
+    <mesh
+      position={position}
+      onClick={(e) => {
+        e.stopPropagation();
+        onClick(element);
+      }}>
+      <planeGeometry args={plane} />
+
       <meshPhysicalMaterial
         clearcoat={1}
         clearcoatRoughness={0}
@@ -57,7 +63,7 @@ function SmallBox({ position, element, box, color }: any) {
         transparent
       />
       <Html position={[0, 0, 0]} center>
-        <div className='element' style={{ color: color }}>
+        <div className='element' style={{ color: color, fontSize: "x-small" }}>
           <div className='number'>{element.number}</div>
           <div className='symbol'>{element.symbol}</div>
           <div className='details'>
@@ -90,7 +96,13 @@ function createSpheresFromData({ data, bigRadius }: any) {
   return targets;
 }
 
-function BigSphere({ period, smaillRadius, bigRadius, color }: any) {
+function BigSphere({
+  period,
+  smaillRadius,
+  bigRadius,
+  color,
+  onElementClick,
+}: any) {
   const { sphere } = createSpheresFromData({ data: period, bigRadius });
 
   return (
@@ -103,12 +115,13 @@ function BigSphere({ period, smaillRadius, bigRadius, color }: any) {
         //     sphere={[smaillRadius, 64, 64]}
         //     color={color}
         //   />
-        <SmallBox
+        <SmallPlane
           key={index}
           element={element}
           position={sphere[index]}
-          box={[smaillRadius * 2, smaillRadius * 4, 1]}
+          plane={[smaillRadius * 2, smaillRadius * 4]}
           color={color}
+          onClick={onElementClick}
         />
       ))}
     </>
@@ -116,6 +129,12 @@ function BigSphere({ period, smaillRadius, bigRadius, color }: any) {
 }
 
 function PeriodicTable() {
+  const [clickedElement, setClickedElement] = useState(null);
+
+  const handleElementClick = (element: any) => {
+    setClickedElement(element);
+  };
+
   return (
     <Canvas
       frameloop='demand'
@@ -128,6 +147,7 @@ function PeriodicTable() {
         smaillRadius={20}
         bigRadius={100}
         color={"red"}
+        onElementClick={handleElementClick}
       />
       <BigSphere
         period={period2}
@@ -165,6 +185,32 @@ function PeriodicTable() {
         bigRadius={700}
         color={"purple"}
       />
+
+      {/* {clickedElement && (
+        <mesh position={[0, 0, 0]}>
+          <sphereGeometry args={[30, 64, 64]} />
+          <meshPhysicalMaterial
+            clearcoat={1}
+            clearcoatRoughness={0}
+            roughness={0}
+            metalness={0.4}
+            iridescence={1}
+            color={clickedElement.color}
+            transparent
+          />
+          <Html position={[0, 0, 0]} center>
+            <div className='element' style={{ color: clickedElement.color, fontSize: "x-small" }}>
+              <div className='number'>{clickedElement.number}</div>
+              <div className='symbol'>{clickedElement.symbol}</div>
+              <div className='details'>
+                {clickedElement.name}
+                <br />
+                {clickedElement.weight}
+              </div>
+            </div>
+          </Html>
+        </mesh>
+      )} */}
     </Canvas>
   );
 }
