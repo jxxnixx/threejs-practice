@@ -165,6 +165,7 @@ function BigSphere({ period, smaillRadius, bigRadius, color }: any) {
 
 function SelectToZoom({ children }: any) {
   const api = useBounds();
+
   return (
     <group
       onClick={(e) => (
@@ -178,11 +179,29 @@ function SelectToZoom({ children }: any) {
   );
 }
 
+// TODO
+// position 위치나 여러 정보들을 저장하는 객체 자체를 만들어서 출력하자
+// 줌인, 줌아웃 시 모든 카드들이 화면상에 **거의 정면으로 보여야 함
+// 구 크기 키워서 개발해보기
+// 구 상에서 카드 위치 픽싱하는 거, 포지션 잡는 법 고민하기
+// 커서 + 패럴랙스 확대 비율 고민하기, % 사용 + 좌표 결정 방법 고민
+// 클릭 시 해당 객체 depth 출력 + 현재 depth 전역 관리(blur)
+// blur 처리 방식 고민하기 - 대상 피사체 바로 뒤에 blur layer 까는 방식 느낌...? 2개 정도.. 음 카메라를 이동시킬건지 블러 레이어를 이동시킬건지 고민
+// css3drenderer로 geometry 위의 html 객체에도 회전 등 효과 부여하기
+// 상태관리 객체화/클래스화or함수화 jotai처럼 배열 안에 obj 만들고 그 안에서 상태관리 해도 됨. jotai는 three 객체도 가질 수 있을지도? 확인 ㄱㄱ
+// geometry 지우고 DOM으로 대체
+
 function PeriodicTable() {
   return (
     <Canvas
       frameloop="demand"
-      camera={{ fov: 300, near: 0.1, far: 5000, position: [0, 0, 1000] }}
+      camera={{
+        fov: 300,
+        near: 0.1,
+        far: 5000,
+        position: [0, 0, 1000],
+        isPerspectiveCamera: true,
+      }}
       style={{ height: '100vh' }}
     >
       <ambientLight />
@@ -233,13 +252,14 @@ function PeriodicTable() {
             />
           </SelectToZoom>
         </Bounds>
-        <OrbitControls
+        {/* <OrbitControls
+          autoRotate={false}
           minAzimuthAngle={Math.PI / -20}
           maxAzimuthAngle={Math.PI / 20}
           minPolarAngle={Math.PI / 2.1}
           maxPolarAngle={Math.PI / 1.9}
           zoomToCursor
-        />
+        /> */}
         {/* <DragControls /> */}
       </Suspense>
     </Canvas>
