@@ -14,11 +14,14 @@
     "@react-three/fiber": "^8.15.14",
     "@react-three/postprocessing": "^2.15.12",
     "@types/three": "^0.160.0",
+    "maath": "^0.10.7",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18",
     "three": "^0.160.0",
-    "three-stdlib": "^2.29.11"
+    "three-stdlib": "^2.29.11",
+    "uuid-by-string": "^4.0.0",
+    "wouter": "^3.1.2"
   },
   "devDependencies": {
     "@types/node": "^20",

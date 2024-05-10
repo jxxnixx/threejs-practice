@@ -1,9 +1,22 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { Html, OrbitControls } from "@react-three/drei";
-import * as THREE from "three";
+import React, { Suspense, useRef, useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import {
+  Html,
+  OrbitControls,
+  useCursor,
+  Image,
+  Bounds,
+  useBounds,
+  PointerLockControls,
+  FlyControls,
+  DragControls,
+  PivotControls,
+  CameraControls,
+  FaceControls,
+} from '@react-three/drei';
+import * as THREE from 'three';
 import {
   elements,
   period1,
@@ -13,7 +26,7 @@ import {
   period5,
   period6,
   period7,
-} from "./elements.js";
+} from './elements.js';
 
 function SmallSphere({ position, element, sphere, color }: any) {
   return (
@@ -29,10 +42,10 @@ function SmallSphere({ position, element, sphere, color }: any) {
         transparent
       />
       <Html position={[0, 0, 0]} center>
-        <div className='element' style={{ color: color, fontSize: "x-small" }}>
-          <div className='number'>{element.number}</div>
-          <div className='symbol'>{element.symbol}</div>
-          <div className='details'>
+        <div className="element" style={{ color: color, fontSize: 'x-small' }}>
+          <div className="number">{element.number}</div>
+          <div className="symbol">{element.symbol}</div>
+          <div className="details">
             {element.name}
             <br />
             {element.weight}
@@ -43,37 +56,63 @@ function SmallSphere({ position, element, sphere, color }: any) {
   );
 }
 
-function SmallPlane({ position, element, plane, color, onClick }: any) {
-  return (
-    <mesh
-      position={position}
-      onClick={(e) => {
-        e.stopPropagation();
-        onClick(element);
-      }}>
-      <planeGeometry args={plane} />
+function SmallBox({ position, element, box, color, ...props }: any) {
+  const image: any = useRef();
+  const frame: any = useRef();
 
-      <meshPhysicalMaterial
-        clearcoat={1}
-        clearcoatRoughness={0}
-        roughness={0}
-        metalness={0.4}
-        iridescence={1}
-        color={color}
-        transparent
-      />
-      <Html position={[0, 0, 0]} center>
-        <div className='element' style={{ color: color, fontSize: "x-small" }}>
-          <div className='number'>{element.number}</div>
-          <div className='symbol'>{element.symbol}</div>
-          <div className='details'>
-            {element.name}
-            <br />
-            {element.weight}
+  const [hovered, setHovered] = useState(false);
+  const [rnd] = useState(() => Math.random());
+
+  useCursor(hovered);
+
+  return (
+    <group {...props}>
+      <mesh
+        position={position}
+        name={element.symbol}
+        onPointerOver={(e) => (e.stopPropagation(), setHovered(true))}
+        onPointerOut={() => setHovered(false)}
+        scale={[1, 1, 0.05]}
+      >
+        <boxGeometry args={box} />
+
+        <meshPhysicalMaterial
+          clearcoat={1}
+          clearcoatRoughness={0}
+          roughness={0}
+          metalness={0.4}
+          iridescence={1}
+          color={color}
+          transparent
+        />
+
+        {/* <mesh ref={frame} raycast={() => null} scale={[0.9, 0.93, 0.9]}>
+          <boxGeometry />
+          <meshBasicMaterial toneMapped={false} fog={false} />
+        </mesh> */}
+        {/* <Image
+          raycast={() => null}
+          ref={image}
+          position={position}
+          url={'/image.png'}
+        /> */}
+
+        <Html position={[0, 0, 0]} center>
+          <div
+            className="element"
+            style={{ color: color, fontSize: 'x-small' }}
+          >
+            <div className="number">{element.number}</div>
+            <div className="symbol">{element.symbol}</div>
+            <div className="details">
+              {element.name}
+              <br />
+              {element.weight}
+            </div>
           </div>
-        </div>
-      </Html>
-    </mesh>
+        </Html>
+      </mesh>
+    </group>
   );
 }
 
@@ -96,14 +135,11 @@ function createSpheresFromData({ data, bigRadius }: any) {
   return targets;
 }
 
-function BigSphere({
-  period,
-  smaillRadius,
-  bigRadius,
-  color,
-  onElementClick,
-}: any) {
+function BigSphere({ period, smaillRadius, bigRadius, color }: any) {
   const { sphere } = createSpheresFromData({ data: period, bigRadius });
+
+  const ref: any = useRef();
+  const clicked: any = useRef();
 
   return (
     <>
@@ -115,102 +151,97 @@ function BigSphere({
         //     sphere={[smaillRadius, 64, 64]}
         //     color={color}
         //   />
-        <SmallPlane
+        <SmallBox
           key={index}
           element={element}
           position={sphere[index]}
-          plane={[smaillRadius * 2, smaillRadius * 4]}
+          box={[smaillRadius * 2, smaillRadius * 4, 1]}
           color={color}
-          onClick={onElementClick}
         />
       ))}
     </>
   );
 }
 
+function SelectToZoom({ children }: any) {
+  const api = useBounds();
+  return (
+    <group
+      onClick={(e) => (
+        // e.stopPropagation(), e.delta <= 2 && api.get
+        e.stopPropagation(), e.delta <= 2 && api.refresh(e.object).fit()
+      )}
+      onPointerMissed={(e) => e.button === 0 && api.refresh().fit()}
+    >
+      {children}
+    </group>
+  );
+}
+
 function PeriodicTable() {
-  const [clickedElement, setClickedElement] = useState(null);
-
-  const handleElementClick = (element: any) => {
-    setClickedElement(element);
-  };
-
   return (
     <Canvas
-      frameloop='demand'
-      camera={{ fov: 300, near: 0.1, far: 5000, position: [0, 0, 2000] }}
-      style={{ height: "100vh" }}>
+      frameloop="demand"
+      camera={{ fov: 300, near: 0.1, far: 5000, position: [0, 0, 1000] }}
+      style={{ height: '100vh' }}
+    >
       <ambientLight />
-      <OrbitControls />
-      <BigSphere
-        period={period1}
-        smaillRadius={20}
-        bigRadius={100}
-        color={"red"}
-        onElementClick={handleElementClick}
-      />
-      <BigSphere
-        period={period2}
-        smaillRadius={20}
-        bigRadius={200}
-        color={"red"}
-      />
-      <BigSphere
-        period={period3}
-        smaillRadius={20}
-        bigRadius={300}
-        color={"orange"}
-      />
-      <BigSphere
-        period={period4}
-        smaillRadius={20}
-        bigRadius={400}
-        color={"yellow"}
-      />
-      <BigSphere
-        period={period5}
-        smaillRadius={20}
-        bigRadius={500}
-        color={"green"}
-      />
-      <BigSphere
-        period={period6}
-        smaillRadius={20}
-        bigRadius={600}
-        color={"blue"}
-      />
-      <BigSphere
-        period={period7}
-        smaillRadius={20}
-        bigRadius={700}
-        color={"purple"}
-      />
-
-      {/* {clickedElement && (
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[30, 64, 64]} />
-          <meshPhysicalMaterial
-            clearcoat={1}
-            clearcoatRoughness={0}
-            roughness={0}
-            metalness={0.4}
-            iridescence={1}
-            color={clickedElement.color}
-            transparent
-          />
-          <Html position={[0, 0, 0]} center>
-            <div className='element' style={{ color: clickedElement.color, fontSize: "x-small" }}>
-              <div className='number'>{clickedElement.number}</div>
-              <div className='symbol'>{clickedElement.symbol}</div>
-              <div className='details'>
-                {clickedElement.name}
-                <br />
-                {clickedElement.weight}
-              </div>
-            </div>
-          </Html>
-        </mesh>
-      )} */}
+      <Suspense fallback={null}>
+        <Bounds observe>
+          <SelectToZoom>
+            <BigSphere
+              period={period1}
+              smaillRadius={20}
+              bigRadius={100}
+              color={'red'}
+            />
+            <BigSphere
+              period={period2}
+              smaillRadius={20}
+              bigRadius={200}
+              color={'red'}
+            />
+            <BigSphere
+              period={period3}
+              smaillRadius={20}
+              bigRadius={300}
+              color={'orange'}
+            />
+            <BigSphere
+              period={period4}
+              smaillRadius={20}
+              bigRadius={400}
+              color={'yellow'}
+            />
+            <BigSphere
+              period={period5}
+              smaillRadius={20}
+              bigRadius={500}
+              color={'green'}
+            />
+            <BigSphere
+              period={period6}
+              smaillRadius={20}
+              bigRadius={600}
+              color={'blue'}
+            />
+            <BigSphere
+              period={period7}
+              smaillRadius={20}
+              bigRadius={700}
+              color={'purple'}
+            />
+          </SelectToZoom>
+        </Bounds>
+        <OrbitControls
+          minAzimuthAngle={Math.PI / -20}
+          maxAzimuthAngle={Math.PI / 20}
+          minPolarAngle={Math.PI / 2.1}
+          maxPolarAngle={Math.PI / 1.9}
+          zoomToCursor
+        />
+        {/* <DragControls /> */}
+      </Suspense>
     </Canvas>
   );
 }
