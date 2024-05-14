@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 const tableIndex = () => {
-  return <div>tableIndex</div>;
-};
+	return <div>tableIndex</div>
+}
 
-export default tableIndex;
+export default tableIndex
