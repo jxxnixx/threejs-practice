@@ -7,6 +7,7 @@ import TableIndex from '@/components/tableIndex'
 import PeriodicTable from '@/components/periodicTable'
 import Gallery from '@/components/gallery'
 import SphereComponent from '@/components/periodic'
+import PeriodicSphere from '@/components/periodicSphere'
 
 const images = [
 	// Front
@@ -59,6 +60,7 @@ export default function Home() {
 			{/* <PeriodicTable /> */}
 			{/* <Gallery images={images} /> */}
 			<SphereComponent />
+			{/* <PeriodicSphere/> */}
 		</main>
 	)
 }

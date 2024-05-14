@@ -20,33 +20,33 @@ import * as THREE from 'three'
 import { elements, period1, period2, period3, period4, period5, period6, period7 } from './elements.js'
 import { CSS3DObject, CSS3DRenderer } from 'three/examples/jsm/Addons.js'
 
-function SmallSphere({ position, element, sphere, color }: any) {
-	return (
-		<mesh position={position}>
-			<sphereGeometry args={sphere} />
-			<meshPhysicalMaterial
-				clearcoat={1}
-				clearcoatRoughness={0}
-				roughness={0}
-				metalness={0.4}
-				iridescence={1}
-				color={color}
-				transparent
-			/>
-			<Html position={[0, 0, 0]} center>
-				<div className="element" style={{ color: color, fontSize: 'x-small' }}>
-					<div className="number">{element.number}</div>
-					<div className="symbol">{element.symbol}</div>
-					<div className="details">
-						{element.name}
-						<br />
-						{element.weight}
-					</div>
-				</div>
-			</Html>
-		</mesh>
-	)
-}
+// function SmallSphere({ position, element, sphere, color }: any) {
+// 	return (
+// 		<mesh position={position}>
+// 			<sphereGeometry args={sphere} />
+// 			<meshPhysicalMaterial
+// 				clearcoat={1}
+// 				clearcoatRoughness={0}
+// 				roughness={0}
+// 				metalness={0.4}
+// 				iridescence={1}
+// 				color={color}
+// 				transparent
+// 			/>
+// 			<Html position={[0, 0, 0]} center>
+// 				<div className="element" style={{ color: color, fontSize: 'x-small' }}>
+// 					<div className="number">{element.number}</div>
+// 					<div className="symbol">{element.symbol}</div>
+// 					<div className="details">
+// 						{element.name}
+// 						<br />
+// 						{element.weight}
+// 					</div>
+// 				</div>
+// 			</Html>
+// 		</mesh>
+// 	)
+// }
 
 function SmallBox({ position, element, box, color, ...props }: any) {
 	const image: any = useRef()
@@ -89,7 +89,7 @@ function SmallBox({ position, element, box, color, ...props }: any) {
           url={'/image.png'}
         /> */}
 
-				<Html position={[0, 0, 0]} center>
+				{/* <Html position={[0, 0, 0]} center>
 					<div className="element" style={{ color: color, fontSize: 'x-small' }}>
 						<div className="number">{element.number}</div>
 						<div className="symbol">{element.symbol}</div>
@@ -99,7 +99,7 @@ function SmallBox({ position, element, box, color, ...props }: any) {
 							{element.weight}
 						</div>
 					</div>
-				</Html>
+				</Html> */}
 			</mesh>
 		</group>
 	)
