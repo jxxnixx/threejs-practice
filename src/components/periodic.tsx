@@ -24,14 +24,23 @@ const SphereComponent = () => {
 			let vector = new THREE.Vector3()
 
 			elements.forEach((element, index) => {
+				let phi = Math.acos(-1 + (2 * index) / elements.length)
+				let theta = Math.sqrt(elements.length * Math.PI) * phi
+
 				let text = document.createElement('div')
 				text.className = 'element'
 				text.style.backgroundColor = 'rgba(0,127,127,0.25)'
 				text.textContent = element.symbol
+
 				let elementObject = new CSS3DObject(text)
-				elementObject.position.setFromSphericalCoords(800, element.period, element.group)
+				elementObject.position.setFromSphericalCoords(800, phi, theta)
+
+				vector.copy(elementObject.position).multiplyScalar(2)
+				elementObject.lookAt(vector)
+
 				scene.add(elementObject)
 				objects.push(elementObject)
+
 				targets.sphere.push(elementObject as never)
 			})
 
