@@ -10,6 +10,8 @@ import SphereComponent from '@/components/periodic'
 import PeriodicSphere from '@/components/periodicSphere'
 import BigSphere from '@/components/periodicComponent'
 import PeriodicComp from '@/components/periodicComp'
+import GlassText from '@/components/glassText'
+import GlassText2 from '@/components/glassText2'
 
 const images = [
 	// Front
@@ -64,7 +66,9 @@ export default function Home() {
 			{/* <SphereComponent /> */}
 			{/* <PeriodicSphere /> */}
 			{/* <BigSphere /> */}
-			<PeriodicComp />
+			{/* <PeriodicComp /> */}
+			{/* <GlassText /> */}
+			<GlassText2 />
 		</main>
 	)
 }
