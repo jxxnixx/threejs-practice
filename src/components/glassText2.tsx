@@ -11,49 +11,100 @@ import {
 	Float,
 } from '@react-three/drei'
 import * as THREE from 'three'
-import { FontLoader } from 'three/addons/loaders/FontLoader.js'
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js'
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js'
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js'
 import { easing } from 'maath'
 import { EffectComposer, N8AO, TiltShift2 } from '@react-three/postprocessing'
 
+const fonts = [
+	'https://threejs.org/examples/fonts/gentilis_bold.typeface.json',
+	'https://threejs.org/examples/fonts/gentilis_regular.typeface.json',
+	'https://threejs.org/examples/fonts/helvetiker_bold.typeface.json',
+	'https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
+	'https://threejs.org/examples/fonts/optimer_bold.typeface.json',
+	'https://threejs.org/examples/fonts/optimer_regular.typeface.json',
+]
+
+const fonts2 = [
+	// '/fonts/Apahal_Regular.json',
+	// '/fonts/Ave Fedan PERSONAL USE ONLY_Regular.json',
+	// '/fonts/Cherry and Kisses Personal Use_Regular.json',
+	// '/fonts/DurianPartyDemo_Regular (1).json',
+
+	// '/fonts/DurianPartyDemo_Regular.json',
+	// '/fonts/Lonely Coffee_Regular (1).json',
+	// '/fonts/Lonely Coffee_Regular.json',
+	// '/fonts/Lucy the Cat_Regular.json',
+
+	'/fonts/Motley Forces_Regular.json',
+	'/fonts/Sketch Bego Fill_Regular.json',
+	'/fonts/Voogle Extrude_Regular.json',
+	'/fonts/Voogle_Regular.json',
+]
+
+const fontPositions = [
+	// [-13, 10, -5],
+	// [-13, 5, -5],
+	// [-13, 0, -5],
+	// [-13, -5, -5],
+
+	[0, 10, -5],
+	[0, 5, -5],
+	[0, 0, -5],
+	[0, -5, -5],
+
+	// [13, 10, -5],
+	// [13, 5, -5],
+	// [13, 0, -5],
+	// [13, -5, -5],
+]
+
 const GlassText: React.FC = () => {
-	const meshRef = useRef<THREE.Group>(null)
+	const meshRefs = useRef<THREE.Group[]>([])
 
 	useEffect(() => {
 		const loader = new FontLoader()
-		loader.load('https://threejs.org/examples/fonts/helvetiker_bold.typeface.json', (font) => {
-			const geometry = new TextGeometry('Loogle', {
-				font: font,
-				size: 2.5,
-				height: 1,
-				curveSegments: 12,
-				bevelEnabled: true,
-				bevelThickness: 0.15,
-				bevelSize: 0.15,
-				bevelOffset: 0,
-				bevelSegments: 7.5,
-			})
+		fonts2.forEach((fontUrl, index) => {
+			loader.load(fontUrl, (font) => {
+				const geometry = new TextGeometry('Loogle', {
+					font: font,
+					size: 2.5,
+					height: 1,
+					curveSegments: 12,
+					bevelEnabled: true,
+					bevelThickness: 0.15,
+					bevelSize: 0.15,
+					bevelOffset: 0,
+					bevelSegments: 7.5,
+				})
 
-			const material = new THREE.MeshPhysicalMaterial({
-				color: 0xffffff,
-				metalness: 0.15,
-				roughness: 0.05,
-				transmission: 1,
-				opacity: 1,
-				transparent: true,
-				clearcoat: 0.8,
-				clearcoatRoughness: 1,
-			})
+				const material = new THREE.MeshPhysicalMaterial({
+					color: 0xffffff,
+					metalness: 0.15,
+					roughness: 0.05,
+					transmission: 1,
+					opacity: 1,
+					transparent: true,
+					clearcoat: 0.8,
+					clearcoatRoughness: 1,
+				})
 
-			const mesh = new THREE.Mesh(geometry, material)
-			if (meshRef.current) {
-				meshRef.current.add(mesh)
-				mesh.position.set(-3, 0, 0)
-			}
+				const mesh = new THREE.Mesh(geometry, material)
+				if (meshRefs.current[index]) {
+					meshRefs.current[index].add(mesh)
+					mesh.position.set(0, 0, 0)
+				}
+			})
 		})
 	}, [])
 
-	return <group ref={meshRef} />
+	return (
+		<>
+			{fonts2.map((_, index) => (
+				<group key={index} ref={(el) => (meshRefs.current[index] = el!)} position={fontPositions[index]} />
+			))}
+		</>
+	)
 }
 
 const Rig: React.FC = () => {
@@ -69,33 +120,14 @@ const Rig: React.FC = () => {
 	return null
 }
 
-const Knot: React.FC<any> = (props) => (
-	<mesh receiveShadow castShadow {...props}>
-		<torusKnotGeometry args={[3, 1, 256, 32]} />
-		<MeshTransmissionMaterial backside backsideThickness={5} thickness={2} />
-	</mesh>
-)
-
-// const Bomb: React.FC<any> = (props) => {
-//   const { nodes } = useGLTF("/bomb-gp.glb")
-//   return (
-//     <mesh receiveShadow castShadow geometry={nodes.Little_Boy_Little_Boy_Material_0.geometry} {...props}>
-//       <MeshTransmissionMaterial backside backsideThickness={10} thickness={5} />
-//     </mesh>
-//   )
-// }
-
 const Scene: React.FC = () => {
 	return (
-		<Canvas style={{ width: '100vw', height: '100vh' }} camera={{ position: [0, 0, 10] }}>
+		<Canvas style={{ width: '100vw', height: '100vh' }} camera={{ position: [0, 0, 30] }}>
 			<color attach="background" args={['#e0e0e0']} />
 			<spotLight position={[20, 20, 10]} penumbra={1} castShadow angle={0.2} />
 
-			{/* <Float floatIntensity={2}>
-				<Knot />
-			</Float> */}
-
 			<ContactShadows scale={100} position={[0, -7.5, 0]} blur={1} far={100} opacity={0.85} />
+
 			<Environment preset="city">
 				<Lightformer
 					intensity={8}
@@ -104,6 +136,7 @@ const Scene: React.FC = () => {
 					onUpdate={(self) => self.lookAt(0, 0, 0)}
 				/>
 			</Environment>
+
 			<Float floatIntensity={2}>
 				<GlassText />
 			</Float>
